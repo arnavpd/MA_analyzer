@@ -14,5 +14,6 @@ namespace MA_analyzer
         public string Customers { get; set; }
 
         public string Revenue { get; set; }
+        public string StartupId { get; set; }
     }
 }

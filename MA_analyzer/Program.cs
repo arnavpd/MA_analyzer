@@ -41,8 +41,12 @@ foreach (string line in lines)
     {
         company.Revenue = data;
     }
-    
 
+    data = extract(line, "startupId");
+    if (data != null)
+    {
+        company.StartupId = data;
+    }
 
 
     counter++; 
