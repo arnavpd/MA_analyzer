@@ -1,5 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Data.SqlClient;
+using Dapper;
 using MA_analyzer;
+const string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\arnav\\source\\repos\\MA_analyzer\\MA_analyzer\\Data\\MA_Data.mdf;Integrated Security=True;Connect Timeout=30";
+using (var connection = new SqlConnection(connectionString))
+{
+    if (connection != null)
+    {
+        var startups = connection.Query<Company>("select * from Startups").ToList();
+    }
+}
+
 
 Console.WriteLine("Hello, World!");
 int counter = 0;
@@ -76,13 +87,25 @@ foreach (string line in lines)
  }
 
 
-File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About" + Environment.NewLine);
 
-foreach (var startup in companies)
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About" + Environment.NewLine);
+string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About) Values (@StartupId, @About);";
+using (var connection = new SqlConnection(connectionString))
 {
-    var eachLine = startup.StartupId + ",\'" + startup.About+ "\'" + Environment.NewLine;
-   File.AppendAllText(@"..\..\..\data\startups.csv", eachLine);
+    if (connection != null)
+    {
+        connection.Execute("delete Startups");
+        foreach (var startup in companies)
+        {
+            var eachLine = startup.StartupId + ",\'" + startup.About + "\'" + Environment.NewLine;
+            File.AppendAllText(@"..\..\..\data\startups.csv", eachLine);
+            var affectedRows = connection.Execute(sqlCustomerInsert, startup);
+        }
+    }
 }
+
+
+
 
 System.Console.WriteLine("There were {0} lines.", counter);
 // Suspend the screen.  
