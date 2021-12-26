@@ -4,17 +4,46 @@ using MA_analyzer;
 Console.WriteLine("Hello, World!");
 int counter = 0;
 var companies = new List<Company>();
+var company = new Company();
 var lines = System.IO.File.ReadLines(@"..\..\..\data\feed.json");
 
 // Read the file and display it line by line.  
 foreach (string line in lines)
 {
-    var company = new Company();
-    companies.Add(company);
-    company.About = extract(line, "about");
-    company.Team = extract(line, "team");
-    company.Customers = extract(line, "customers");
-    company.Revenue = extract(line, "revenue");
+    if (line.Contains("\"date\":"))
+    {
+        company = new Company();
+        companies.Add(company);
+    }
+    var data = extract(line, "about");
+    if (data != null)
+    {
+        company.About = data;
+    }
+
+    data = extract(line, "team");
+
+    if (data != null)
+    {
+        company.Team = data;
+    }
+
+    data = extract(line, "customers");
+
+    if (data != null)
+    {
+        company.Customers = data;
+    }
+
+    data = extract(line, "revenue");
+
+    if (data != null)
+    {
+        company.Revenue = data;
+    }
+    
+
+
 
     counter++; 
  }
@@ -33,6 +62,6 @@ string extract (string line, string keyWord)
         System.Console.WriteLine("\n");
         return data; 
     }
-    return string.Empty;
+    return null;
     
 }
