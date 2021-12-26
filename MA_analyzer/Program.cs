@@ -5,7 +5,7 @@ Console.WriteLine("Hello, World!");
 int counter = 0;
 var companies = new List<Company>();
 var company = new Company();
-var lines = System.IO.File.ReadLines(@"..\..\..\data\feed.json");
+var lines = System.IO.File.ReadLines(@"..\..\..\data\feed_all.json");
 
 // Read the file and display it line by line.  
 foreach (string line in lines)
