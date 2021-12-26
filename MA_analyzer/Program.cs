@@ -48,6 +48,29 @@ foreach (string line in lines)
         company.StartupId = data;
     }
 
+    data = extract(line, "keywords");
+    if (data != null)
+    {
+        company.Keywords = data;
+    }
+
+    data = extract(line, "askingPrice");
+    if (data != null)
+    {
+        company.AskingPrice = data;
+    }
+
+    data = extract(line, "annualProfit");
+    if (data != null)
+    {
+        company.AnnualProfit = data;
+    }
+
+    data = extract(line, "competitors");
+    if (data != null)
+    {
+        company.Competitors = data;
+    }
 
     counter++; 
  }
