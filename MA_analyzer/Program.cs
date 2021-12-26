@@ -75,6 +75,15 @@ foreach (string line in lines)
     counter++; 
  }
 
+
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About" + Environment.NewLine);
+
+foreach (var startup in companies)
+{
+    var eachLine = startup.StartupId + ",\'" + startup.About+ "\'" + Environment.NewLine;
+   File.AppendAllText(@"..\..\..\data\startups.csv", eachLine);
+}
+
 System.Console.WriteLine("There were {0} lines.", counter);
 // Suspend the screen.  
 System.Console.ReadLine();  

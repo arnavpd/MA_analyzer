@@ -23,3 +23,18 @@ namespace MA_analyzer
 
     }
 }
+
+/*CREATE TABLE [dbo].[Startups] (
+    [StartupId] NVARCHAR (50) NOT NULL,
+    [About] NVARCHAR(MAX) NULL, 
+    [Team] INT NULL, 
+    [Customers] INT NULL, 
+    [Revenue] INT NULL, 
+    [Keywords] NVARCHAR(MAX) NULL, 
+    [AskingPrice] INT NULL, 
+    [AnnualProfit] INT NULL, 
+    [Competitors] NVARCHAR(MAX) NULL, 
+    PRIMARY KEY CLUSTERED ([StartupId] ASC)
+);
+
+*/
