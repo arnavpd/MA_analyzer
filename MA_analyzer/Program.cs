@@ -16,7 +16,7 @@ Console.WriteLine("Hello, World!");
 int counter = 0;
 var companies = new List<Company>();
 var company = new Company();
-var lines = System.IO.File.ReadLines(@"..\..\..\data\feed_all.json");
+var lines = System.IO.File.ReadLines(@"..\..\..\data\feed.json");
 
 // Read the file and display it line by line.  
 foreach (string line in lines)
@@ -36,7 +36,7 @@ foreach (string line in lines)
 
     if (data != null)
     {
-        company.Team = data;
+        company.Team = Clean(data);
     }
 
     data = extract(line, "customers");
@@ -46,11 +46,11 @@ foreach (string line in lines)
         company.Customers = data;
     }
 
-    data = extract(line, "revenue");
+    data = extract(line, "\"revenue\":");
 
     if (data != null)
     {
-        company.Revenue = data;
+        company.Revenue = Clean(data);
     }
 
     data = extract(line, "startupId");
@@ -88,8 +88,8 @@ foreach (string line in lines)
 
 
 
-File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About" + Environment.NewLine);
-string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About) Values (@StartupId, @About);";
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords" + Environment.NewLine);
+string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords);";
 using (var connection = new SqlConnection(connectionString))
 {
     if (connection != null)
@@ -123,4 +123,29 @@ string extract (string line, string keyWord)
     }
     return null;
     
+}
+/*
+CREATE TABLE [dbo].[Startups] ( -- creates new table
+    [StartupId] NVARCHAR (50)  NOT NULL,
+    [About]     NVARCHAR (MAX) NULL,
+    [Team] INT NOT NULL, 
+    [Customers] NVARCHAR (50) NOT NULL,
+    [Revenue] INT NOT NULL,
+    [Keywords] NVARCHAR(MAX) NULL,
+    [AskingPrice] INT NULL,
+    PRIMARY KEY CLUSTERED ([StartupId] ASC)
+); 
+
+select * from Startups -- shows data in the table
+
+DROP TABLE [dbo].[Startups] -- delete the table completely 
+
+
+
+*/
+
+int Clean (string data)
+{
+    var output = data.Replace ("\"", "");
+    return Convert.ToInt32(output);
 }

@@ -9,11 +9,11 @@ namespace MA_analyzer
     internal class Company
     {
 
-        public string Team { get; set; }
+        public int Team { get; set; }
         public string About { get; set; }
         public string Customers { get; set; }
 
-        public string Revenue { get; set; }
+        public int Revenue { get; set; }
         public string StartupId { get; set; }
         public string Keywords { get; set; }
         public string AskingPrice { get; set; }
