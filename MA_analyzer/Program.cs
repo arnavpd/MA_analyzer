@@ -93,7 +93,7 @@ using (var connection = new SqlConnection(connectionString))
 {
     if (connection != null)
     {
-        int v = connection.Execute("delete Startups");
+        connection.Execute("delete Startups");
         foreach (var startup in companies)
         {
             var eachLine = startup.StartupId + ",\'" + startup.About + "\'" + Environment.NewLine;
