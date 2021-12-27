@@ -16,7 +16,7 @@ namespace MA_analyzer
         public int Revenue { get; set; }
         public string StartupId { get; set; }
         public string Keywords { get; set; }
-        public string AskingPrice { get; set; }
+        public int Askingprice { get; set; }
         public string AnnualProfit { get; set; }
         public string Competitors { get; set; }
 

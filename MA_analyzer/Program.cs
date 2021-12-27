@@ -65,10 +65,10 @@ foreach (string line in lines)
         company.Keywords = data;
     }
 
-    data = extract(line, "askingPrice");
+    data = extract(line, "\"askingPrice\":");
     if (data != null)
     {
-        company.AskingPrice = data;
+        company.Askingprice = Clean(data);
     }
 
     data = extract(line, "annualProfit");
@@ -83,18 +83,17 @@ foreach (string line in lines)
         company.Competitors = data;
     }
 
-    counter++; 
- }
+    counter++;
+}
 
 
-
-File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords" + Environment.NewLine);
-string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords);";
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords, Askingprice" + Environment.NewLine);
+string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords, Askingprice) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords, @Askingprice);";
 using (var connection = new SqlConnection(connectionString))
 {
     if (connection != null)
     {
-        connection.Execute("delete Startups");
+        int v = connection.Execute("delete Startups");
         foreach (var startup in companies)
         {
             var eachLine = startup.StartupId + ",\'" + startup.About + "\'" + Environment.NewLine;
@@ -109,9 +108,9 @@ using (var connection = new SqlConnection(connectionString))
 
 System.Console.WriteLine("There were {0} lines.", counter);
 // Suspend the screen.  
-System.Console.ReadLine();  
+System.Console.ReadLine();
 
-string extract (string line, string keyWord)
+string extract(string line, string keyWord)
 {
     if (line.Contains(keyWord))
     {
@@ -119,10 +118,10 @@ string extract (string line, string keyWord)
         data = data.Substring(0, data.Length - 1);
         System.Console.WriteLine(data);
         System.Console.WriteLine("\n");
-        return data; 
+        return data;
     }
     return null;
-    
+
 }
 /*
 CREATE TABLE [dbo].[Startups] ( -- creates new table
@@ -144,8 +143,8 @@ DROP TABLE [dbo].[Startups] -- delete the table completely
 
 */
 
-int Clean (string data)
+int Clean(string data)
 {
-    var output = data.Replace ("\"", "");
+    var output = data.Replace("\"", "");
     return Convert.ToInt32(output);
 }
