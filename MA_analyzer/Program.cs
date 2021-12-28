@@ -59,16 +59,16 @@ foreach (string line in lines)
         company.StartupId = data;
     }
 
-    data = extract(line, "keywords");
+    data = extract(line, "\"keywords\"");
     if (data != null)
     {
         company.Keywords = data;
     }
 
-    data = extract(line, "\"askingPrice\":");
+    data = extract(line, "askingPrice:");
     if (data != null)
     {
-        company.Askingprice = Clean(data);
+        company.Keywords = data;
     }
 
     data = extract(line, "annualProfit");
@@ -87,8 +87,8 @@ foreach (string line in lines)
 }
 
 
-File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords, Askingprice" + Environment.NewLine);
-string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords, Askingprice) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords, @Askingprice);";
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords" + Environment.NewLine);
+string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords);";
 using (var connection = new SqlConnection(connectionString))
 {
     if (connection != null)
