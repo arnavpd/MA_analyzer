@@ -16,7 +16,7 @@ Console.WriteLine("Hello, World!");
 int counter = 0;
 var companies = new List<Company>();
 var company = new Company();
-var lines = System.IO.File.ReadLines(@"..\..\..\data\feed.json");
+var lines = System.IO.File.ReadLines(@"..\..\..\data\feed_all.json");
 
 // Read the file and display it line by line.  
 foreach (string line in lines)
@@ -26,20 +26,20 @@ foreach (string line in lines)
         company = new Company();
         companies.Add(company);
     }
-    var data = extract(line, "about");
+    var data = extract(line, "\"about\":");
     if (data != null)
     {
         company.About = data;
     }
 
-    data = extract(line, "team");
+    data = extract(line, "\"team\"");
 
     if (data != null)
     {
         company.Team = Clean(data);
     }
 
-    data = extract(line, "customers");
+    data = extract(line, "\"customers\"");
 
     if (data != null)
     {
@@ -53,7 +53,7 @@ foreach (string line in lines)
         company.Revenue = Clean(data);
     }
 
-    data = extract(line, "startupId");
+    data = extract(line, "\"startupId\"");
     if (data != null)
     {
         company.StartupId = data;
@@ -71,13 +71,13 @@ foreach (string line in lines)
         company.AskingPrice = Clean(data);
     }
 
-    data = extract(line, "annualProfit");
+    data = extract(line, "\"annualProfit\"");
     if (data != null)
     {
-        company.AnnualProfit = data;
+        company.AnnualProfit = Clean(data);
     }
 
-    data = extract(line, "competitors");
+    data = extract(line, "\"competitors\"");
     if (data != null)
     {
         company.Competitors = data;
@@ -87,8 +87,8 @@ foreach (string line in lines)
 }
 
 
-File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords, AskingPrice" + Environment.NewLine);
-string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords, AskingPrice) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords, @AskingPrice);";
+File.WriteAllText(@"..\..\..\data\startups.csv", "StartupId, About, Team, Customers, Revenue, Keywords, AskingPrice, AnnualProfit" + Environment.NewLine);
+string sqlCustomerInsert = "INSERT INTO Startups (StartupId, About, Team, Customers, Revenue, Keywords, AskingPrice, AnnualProfit) Values (@StartupId, @About, @Team, @Customers, @Revenue, @Keywords, @AskingPrice, @AnnualProfit);";
 using (var connection = new SqlConnection(connectionString))
 {
     if (connection != null)
@@ -145,6 +145,13 @@ DROP TABLE [dbo].[Startups] -- delete the table completely
 
 int Clean(string data)
 {
+    if (data.Contains("\"2.5\""))
+    {
+       
+        return 3;
+    }
     var output = data.Replace("\"", "");
-    return Convert.ToInt32(output);
+    return (int)Convert.ToInt32(output);
+    
+
 }
