@@ -53,13 +53,13 @@ foreach (string line in lines)
         company.Revenue = Clean(data);
     }
 
-    data = extract(line, "\"startupId\"");
+    data = extract(line, "\"startupId\":");
     if (data != null)
     {
         company.StartupId = data;
     }
 
-    data = extract(line, "\"keywords\"");
+    data = extract(line, "\"keywords\":");
     if (data != null)
     {
         company.Keywords = data;
@@ -71,13 +71,13 @@ foreach (string line in lines)
         company.AskingPrice = Clean(data);
     }
 
-    data = extract(line, "\"annualProfit\"");
+    data = extract(line, "\"annualProfit\":");
     if (data != null)
     {
-        company.AnnualProfit = Clean(data);
+        company.AnnualProfit = data;
     }
 
-    data = extract(line, "\"competitors\"");
+    data = extract(line, "competitors");
     if (data != null)
     {
         company.Competitors = data;

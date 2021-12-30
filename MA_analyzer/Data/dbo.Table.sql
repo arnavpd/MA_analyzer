@@ -6,7 +6,8 @@
     [Revenue] INT NULL,
     [Keywords] NVARCHAR(MAX) NOT NULL,
     [AskingPrice] INT NOT NULL,
-    [AnnualProfit] INT NOT NULL,
+    [AnnualProfit] NVARCHAR (10) NOT NULL,
+    --[Competitors] NVARCHAR (MAX) NULL,
     PRIMARY KEY CLUSTERED ([StartupId] ASC)
 ); 
 
